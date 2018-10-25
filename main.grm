@@ -49,7 +49,25 @@ BoolLiteral = 'true' | 'false'
 <Start>   ::= <nl opt> <Program> <nl opt>
 
 <Program> ::= <MethodCall>
-           
+
+! -------------------------------------------------
+! Vectors
+! -------------------------------------------------
+
+<IndexedVector> ::= Identifier <VectorIndex>
+                 
+                              
+<VectorIndex>  ::= '[' <Expression> ']' <OptionalExtraIndexes>
+ 
+<OptionalExtraIndexes> ::= '[' <Expression> ']' <VectorIndex> 
+             | '[' <VectorIndex> ']'
+             |
+
+! -------------------------------------------------
+! Variable and Const Declarations
+! -------------------------------------------------
+
+
 ! -------------------------------------------------
 ! Expressions
 ! -------------------------------------------------
@@ -79,43 +97,74 @@ BoolLiteral = 'true' | 'false'
 
 !Add more values to the rule below - as needed
 
-<Value>       ::= <Number>
-               |  StringLiteral
-               |  BoolLiteral
-               |  '(' <Expression> ')'
+<Value>      ::= DecLiteral
+                | FloatLiteral
+                | StringLiteral
+                | BoolLiteral 
+                | Identifier
+                | Identifier  '.' Identifier ! class attr
+                |  '(' <Expression> ')'
 
 
-<Number>     ::= <Increment> <NumberTypes>
-               | <NumberTypes> <Increment>
-               | <NumberTypes>
+<Number>     ::= <Increment> <Expression>
+               | <Expression> <Increment>
+               | <Expression>
 
 <Increment>  ::= '++' 
                | '--'
-               
-<NumberTypes> ::= FloatLiteral
-               | DecLiteral
-               | Identifier
-               | <IndexedVector>
 
-<IndexedVector> ::= Identifier <VectorIndex>
-                 
-                              
-<VectorIndex>  ::= '[' <Expression> ']' <OptionalExtraIndexes>
- 
-<OptionalExtraIndexes> ::= '[' <Expression> ']' <VectorIndex> 
-             | '[' <Expression> ']'
-             |
+
 ! -------------------------------------------------
 ! Function and Method Calls
 ! -------------------------------------------------
 
-<ArgList>  ::= <Expression> <OptionalExtraArgs>
+<ArgList>  ::= <Value> <OptionalExtraArgs>
  
 <OptionalExtraArgs> ::= ',' <ArgList> 
-             | <Expression>
+             | <Value>
              |
                  
 <FunctionCall>  ::= Identifier '(' <ArgList> ')'
 
 <MethodCall>  ::= Identifier '.' <FunctionCall> 
-            
+
+
+<Write>  ::= 'TODO' 
+<Read>  ::= 'TODO' 
+! -------------------------------------------------
+! Control Structures
+! -------------------------------------------------
+
+<If>  ::= 'TODO' 
+
+<While>  ::= 'while' '(' <Expression> ')' '{' <Statements> '}' 
+          
+! -------------------------------------------------
+! Statements and Blocks
+! -------------------------------------------------
+
+<Statements>  ::= <Statement><Statements>
+               | 
+
+<Statement>  ::= <If>
+              | <While>
+              | <Expression> ';'
+              | <Assignment> ';'
+              | <Write> ';'
+              | <Read> ';'
+               
+
+<Assignment>  ::= Identifier '=' <Expression>
+
+! -------------------------------------------------
+! Methods
+! -------------------------------------------------
+<Method>  ::= 'TODO' 
+<MethodBody> ::= '{' <Statements> 'return' <Expression> '}'
+
+! -------------------------------------------------
+! Class
+! -------------------------------------------------
+
+
+
