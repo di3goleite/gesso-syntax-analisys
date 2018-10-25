@@ -50,19 +50,36 @@ BoolLiteral = 'true' | 'false'
 
 <Program> ::= <MethodCall>
 
+
+<Type> ::= 'int'
+        | 'float'
+        | 'string'
+        | 'bool'
+        | Identifier
+
+
 ! -------------------------------------------------
 ! Vectors
 ! -------------------------------------------------
+          
+<GeneralIdentifier> ::= <OptVector> <ComposedIdentifier>
 
-<IndexedVector> ::= Identifier <VectorIndex>
-                 
-                              
-<VectorIndex>  ::= '[' <Expression> ']' <OptionalExtraIndexes>
+<OptVector> ::= Identifier <VectorIndex>
+             
+<ComposedIdentifier> ::= '.' <GeneralIdentifier>
+                      |
+                                           
+<VectorIndex>  ::= '[' <Expression> ']' <VectorIndex>
+                |
  
-<OptionalExtraIndexes> ::= '[' <Expression> ']' <VectorIndex> 
-             | '[' <VectorIndex> ']'
-             |
 
+<GeneralIdentifierList> ::= <GeneralIdentifier> <OptionalExtraIds>
+                         |
+
+<OptionalExtraIds> ::= ',' <GeneralIdentifierList> 
+             | <GeneralIdentifier>
+             |
+ 
 ! -------------------------------------------------
 ! Variable and Const Declarations
 ! -------------------------------------------------
@@ -97,18 +114,25 @@ BoolLiteral = 'true' | 'false'
 
 !Add more values to the rule below - as needed
 
-<Value>      ::= DecLiteral
-                | FloatLiteral
+<BaseValue> ::= DecLiteral
+             | FloatLiteral
+             | StringLiteral
+             | BoolLiteral
+             | <GeneralIdentifier>
+
+<Value>      ::= <NumberLiteral>
                 | StringLiteral
                 | BoolLiteral 
-                | Identifier
-                | Identifier  '.' Identifier ! class attr
                 |  '(' <Expression> ')'
 
 
 <Number>     ::= <Increment> <Expression>
                | <Expression> <Increment>
                | <Expression>
+               
+<NumberLiteral> ::= DecLiteral
+                 | FloatLiteral
+                 | <GeneralIdentifier>
 
 <Increment>  ::= '++' 
                | '--'
@@ -118,24 +142,26 @@ BoolLiteral = 'true' | 'false'
 ! Function and Method Calls
 ! -------------------------------------------------
 
-<ArgList>  ::= <Value> <OptionalExtraArgs>
+<ArgList>  ::= <BaseValue> <OptionalExtraArgs>
+            |
  
 <OptionalExtraArgs> ::= ',' <ArgList> 
-             | <Value>
+             | <BaseValue>
              |
                  
-<FunctionCall>  ::= Identifier '(' <ArgList> ')'
+<FunctionParams>  ::= '(' <ArgList> ')'
 
-<MethodCall>  ::= Identifier '.' <FunctionCall> 
+<MethodCall>  ::= <GeneralIdentifier> <FunctionParams> 
 
 
-<Write>  ::= 'TODO' 
-<Read>  ::= 'TODO' 
+<Write>  ::= 'write' <FunctionParams>
+<Read>  ::= 'read' <GeneralIdentifierList>
+         
 ! -------------------------------------------------
 ! Control Structures
 ! -------------------------------------------------
 
-<If>  ::= 'TODO' 
+<If>  ::= 'if' 
 
 <While>  ::= 'while' '(' <Expression> ')' '{' <Statements> '}' 
           
@@ -148,19 +174,30 @@ BoolLiteral = 'true' | 'false'
 
 <Statement>  ::= <If>
               | <While>
-              | <Expression> ';'
               | <Assignment> ';'
               | <Write> ';'
               | <Read> ';'
-               
 
-<Assignment>  ::= Identifier '=' <Expression>
+               
+<RetornableStatements> ::= <Expression>
+                        | <MethodCall>
+                        
+<Assignment>  ::= Identifier '=' <RetornableStatements>
 
 ! -------------------------------------------------
 ! Methods
 ! -------------------------------------------------
-<Method>  ::= 'TODO' 
-<MethodBody> ::= '{' <Statements> 'return' <Expression> '}'
+
+<Function>  ::= <Type> Identifier '('<Params> ')' <FunctionBody>
+
+<Params> ::= <Type> <OptVector> <OptParams>
+
+<OptParams> ::= ',' <Params>
+             |
+
+<FunctionBody> ::= '{' <Statements> 'return' <Expression> '}'
+
+<Method> ::= 'method' <Function>
 
 ! -------------------------------------------------
 ! Class

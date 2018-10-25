@@ -1,0 +1,1 @@
+x.y(x*x + true * (abcde/2++ - --x)/f, k, classe.metodo, aaaaaaa, 1234, _identificador)

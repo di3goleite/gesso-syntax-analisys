@@ -1,0 +1,1 @@
+x[a].classe[abc/2].atributo.atributo.k.attr[100+2]
