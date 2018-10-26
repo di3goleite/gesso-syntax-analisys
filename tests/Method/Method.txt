@@ -1,0 +1,3 @@
+method int nomeDoMetodo (int a, float b, Class c) {
+    1 a
+}
