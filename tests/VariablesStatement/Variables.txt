@@ -1,0 +1,11 @@
+variables{ 
+    int x, 
+        x=6; 
+    float x=5, 
+          x; 
+    float x;     
+    Class z = x[0], 
+          y = x.y, 
+          z = "oi",
+          x = y[0][0][0];
+}

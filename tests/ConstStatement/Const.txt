@@ -1,0 +1,10 @@
+const{ 
+    int x=1, 
+        x=6; 
+    float x=5, 
+        x=6; 
+    Class z = x[0], 
+        y = x.y, 
+        z = "oi",
+        x = y[0][0][0];
+}
