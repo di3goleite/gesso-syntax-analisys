@@ -1,4 +1,4 @@
-﻿"Name"     = 'Enter the name of the grammar'
+"Name"     = 'Enter the name of the grammar'
 "Author"   = 'Enter your name'
 "Version"  = 'The version of the grammar and/or language'
 "About"    = 'A short description of the grammar'
@@ -18,13 +18,6 @@
 ! Terminals
 ! -------------------------------------------------
 
-! The following defines the Whitespace terminal using the {WS}
-! set - which excludes the carriage return and line feed 
-! characters
-
-!Whitespace    = {WS}+
-!NewLine       = {CR}{LF} | {CR} | {LF}
-
 Identifier    = {ID Head}{ID Tail}*
 DecLiteral       = [0123456789]{Digit}*
 FloatLiteral     = {Digit}*'.'{Digit}+
@@ -35,22 +28,9 @@ BoolLiteral = 'true' | 'false'
 ! Rules
 ! -------------------------------------------------
 
-! The following rule defines a series of newline tokens.
-! Use this rule rather than the newline terminal.
-
-!<nl>     ::= NewLine <nl>          !One or more
-!          |  NewLine
-
-!<nl Opt> ::= NewLine <nl Opt>      !Zero or more
-!          |  !Empty
-
-! <nl opt> removes blank lines before first statement
-
-!<Start>   ::= <nl opt> <Program> <nl opt>
 <Start>   ::= <Program>
 
-<Program> ::= <Variables>
-
+<Program> ::= <IfStatement>
 
 <Type> ::= 'int'
         | 'float'
@@ -161,21 +141,17 @@ BoolLiteral = 'true' | 'false'
 
 !Add more values to the rule below - as needed
 
-<BaseValue> ::= DecLiteral
-             | FloatLiteral
+<BaseValue> ::= <Number>
              | StringLiteral
              | BoolLiteral
-             | <GeneralIdentifier>
 
-<Value>      ::= <NumberLiteral>
-                | StringLiteral
-                | BoolLiteral 
+<Value>      ::= <BaseValue>
                 |  '(' <Expression> ')'
 
 
-<Number>     ::= <Increment> <Expression>
-               | <Expression> <Increment>
-               | <Expression>
+<Number>     ::= <Increment> <NumberLiteral>
+               | <NumberLiteral> <Increment>
+               | <NumberLiteral>
                
 <NumberLiteral> ::= DecLiteral
                  | FloatLiteral
@@ -208,7 +184,10 @@ BoolLiteral = 'true' | 'false'
 ! Control Structures
 ! -------------------------------------------------
 
-<If>  ::= 'if' 
+<IfStatement> ::= 'if''('<Expression>')''{'<Statements>'}'<ElseStatement>
+
+<ElseStatement> ::= 'else''{'<Statements>'}' 
+                 |
 
 <While>  ::= 'while' '(' <Expression> ')' '{' <Statements> '}' 
           
@@ -219,8 +198,9 @@ BoolLiteral = 'true' | 'false'
 <Statements>  ::= <Statement><Statements>
                | 
 
-<Statement>  ::= <If>
+<Statement>  ::= <IfStatement>
               | <While>
+              | <RetornableStatements> ';'
               | <Assignment> ';'
               | <Write> ';'
               | <Read> ';'
