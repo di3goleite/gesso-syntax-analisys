@@ -30,7 +30,7 @@ BoolLiteral = 'true' | 'false'
 
 <Start>   ::= <Program>
 
-<Program> ::= <Method>
+<Program> ::= <Variables> <Classes> <Main>
 
 <Type> ::= 'int'
         | 'float'
@@ -80,6 +80,7 @@ BoolLiteral = 'true' | 'false'
 ! Variable Declarations
 ! -------------------------------------------------
 <Variables> ::= 'variables''{' <VariablesBody> '}'
+             |
 
 <VariablesBody> ::=  <Type> <VarDeclList> ';' <VariablesBody>
             |
@@ -219,7 +220,7 @@ BoolLiteral = 'true' | 'false'
 <OptParams> ::= ',' <Params>
              |
 
-<FunctionBody> ::= '{' <Statements> 'return' <Expression> ';' '}'
+<FunctionBody> ::= '{'<Variables> <Statements> 'return' <Expression> ';' '}'
 
 <Method> ::= 'method' <Function>
 
@@ -227,5 +228,16 @@ BoolLiteral = 'true' | 'false'
 ! Class
 ! -------------------------------------------------
 
+<Classes> ::= <Class> <Classes>
+           |
 
+<Class> ::= 'class' Identifier '{' <Variables> <Methods> '}'
+         
+<Methods> ::= <Method> <Methods>
+              |
 
+! -------------------------------------------------
+! Main
+! -------------------------------------------------
+
+<Main> ::= 'main'  '{' <Variables> <Statements> '}'
