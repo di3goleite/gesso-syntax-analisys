@@ -30,7 +30,7 @@ BoolLiteral = 'true' | 'false'
 
 <Start>   ::= <Program>
 
-<Program> ::= <IfStatement>
+<Program> ::= <Method>
 
 <Type> ::= 'int'
         | 'float'
@@ -147,6 +147,7 @@ BoolLiteral = 'true' | 'false'
 
 <Value>      ::= <BaseValue>
                 |  '(' <Expression> ')'
+                | <MethodCall>
 
 
 <Number>     ::= <Increment> <NumberLiteral>
@@ -200,16 +201,12 @@ BoolLiteral = 'true' | 'false'
 
 <Statement>  ::= <IfStatement>
               | <While>
-              | <RetornableStatements> ';'
+              | <Expression> ';'
               | <Assignment> ';'
               | <Write> ';'
               | <Read> ';'
-
-               
-<RetornableStatements> ::= <Expression>
-                        | <MethodCall>
-                        
-<Assignment>  ::= Identifier '=' <RetornableStatements>
+             
+<Assignment>  ::= Identifier '=' <Expression>
 
 ! -------------------------------------------------
 ! Methods
@@ -222,7 +219,7 @@ BoolLiteral = 'true' | 'false'
 <OptParams> ::= ',' <Params>
              |
 
-<FunctionBody> ::= '{' <Statements> 'return' <Expression> '}'
+<FunctionBody> ::= '{' <Statements> 'return' <Expression> ';' '}'
 
 <Method> ::= 'method' <Function>
 
