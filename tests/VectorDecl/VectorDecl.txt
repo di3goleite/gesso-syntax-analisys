@@ -1,0 +1,1 @@
+[[0],[true,false,2,[true, false,[vetor,vetor, fff2]]],[1,2,3,a]]

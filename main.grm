@@ -22,8 +22,8 @@
 ! set - which excludes the carriage return and line feed 
 ! characters
 
-Whitespace    = {WS}+
-NewLine       = {CR}{LF} | {CR} | {LF}
+!Whitespace    = {WS}+
+!NewLine       = {CR}{LF} | {CR} | {LF}
 
 Identifier    = {ID Head}{ID Tail}*
 DecLiteral       = [0123456789]{Digit}*
@@ -38,17 +38,18 @@ BoolLiteral = 'true' | 'false'
 ! The following rule defines a series of newline tokens.
 ! Use this rule rather than the newline terminal.
 
-<nl>     ::= NewLine <nl>          !One or more
-          |  NewLine
+!<nl>     ::= NewLine <nl>          !One or more
+!          |  NewLine
 
-<nl Opt> ::= NewLine <nl Opt>      !Zero or more
-          |  !Empty
+!<nl Opt> ::= NewLine <nl Opt>      !Zero or more
+!          |  !Empty
 
 ! <nl opt> removes blank lines before first statement
 
-<Start>   ::= <nl opt> <Program> <nl opt>
+!<Start>   ::= <nl opt> <Program> <nl opt>
+<Start>   ::= <Program>
 
-<Program> ::= <MethodCall>
+<Program> ::= <Variables>
 
 
 <Type> ::= 'int'
@@ -59,7 +60,7 @@ BoolLiteral = 'true' | 'false'
 
 
 ! -------------------------------------------------
-! Vectors
+! Vector Access
 ! -------------------------------------------------
           
 <GeneralIdentifier> ::= <OptVector> <ComposedIdentifier>
@@ -81,10 +82,56 @@ BoolLiteral = 'true' | 'false'
              |
  
 ! -------------------------------------------------
-! Variable and Const Declarations
+! Vector Declaration
 ! -------------------------------------------------
 
+<VectorDecl>  ::= <Expression> 
+                | <VectorBody>
+                
+<VectorBody> ::= '[' <VectorValueList> ']'
+                
+<VectorValueList> ::=  <VectorDecl> <OptionalValue>
+             
+<OptionalValue> ::= ',' <VectorValueList>
+                 | <VectorDecl>
+                 |
+              
+! -------------------------------------------------
+! Variable Declarations
+! -------------------------------------------------
+<Variables> ::= 'variables''{' <VariablesBody> '}'
 
+<VariablesBody> ::=  <Type> <VarDeclList> ';' <VariablesBody>
+            |
+
+<VarDeclList> ::= <VarDecl>  <OptionalDecls>
+                       
+<OptionalDecls>  ::= ',' <VarDeclList>
+                      |  <VarDecl>
+                      |
+
+<VarDecl> ::= <GeneralIdentifier> <VarAttribution>
+           
+<VarAttribution> ::= '=' <VectorDecl>
+                  |
+
+! -------------------------------------------------
+! Const Declarations
+! -------------------------------------------------
+
+<Const> ::= 'const''{' <ConstBody> '}'
+        
+<ConstBody> ::=  <Type> <ConstAssignmentList> ';' <ConstBody>
+            |  
+
+<ConstAssignment> ::= <GeneralIdentifier> '=' <VectorDecl> 
+                   
+<ConstAssignmentList> ::= <ConstAssignment>  <OptionalAssignments>
+                       
+<OptionalAssignments>  ::= ',' <ConstAssignmentList>
+                      |  <ConstAssignment>
+                      |
+                      
 ! -------------------------------------------------
 ! Expressions
 ! -------------------------------------------------

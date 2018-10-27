@@ -1,10 +1,13 @@
 const{ 
     int x=1, 
-        x=6; 
+        x=6,
+        k=200-100; 
     float x=5, 
         x=6; 
-    Class z = x[0], 
+    int x[10] = "vetor";
+    Class z = x[0],
         y = x.y, 
         z = "oi",
         x = y[0][0][0];
+    Test vector = [[0],[true,false,2,[true, false,[vetor,vetor, fff2]]],[10-20,2,3,a]];
 }
