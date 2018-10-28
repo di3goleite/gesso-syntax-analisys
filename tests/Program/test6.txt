@@ -1,0 +1,28 @@
+class Classe{
+
+    variables {
+        int n, i;
+        int factorial = 1;    
+    }
+    method void teste() {
+    write("Enter an integer: ");
+    read(n);
+
+    if (n < 0) {
+        write("Error! Factorial of a negative number doesn't exist.");
+    }
+    else
+    {
+        while(i<=n)
+        {
+            factorial + i;              
+          }
+        write("Factorial of %d = %llu", n, factorial);
+    }
+   
+    return 0;
+    }
+}
+
+main{
+}
