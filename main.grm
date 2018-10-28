@@ -30,7 +30,7 @@ BoolLiteral = 'true' | 'false'
 
 <Start>   ::= <Program>
 
-<Program> ::= <Variables> <Classes> <Main>
+<Program> ::= <Const> <Classes> <Main>
 
 <Type> ::= 'int'
         | 'float'
@@ -180,7 +180,7 @@ BoolLiteral = 'true' | 'false'
 
 
 <Write>  ::= 'write' <FunctionParams>
-<Read>  ::= 'read' <GeneralIdentifierList>
+<Read>  ::= 'read' '(' <GeneralIdentifierList> ')'
          
 ! -------------------------------------------------
 ! Control Structures
@@ -206,9 +206,11 @@ BoolLiteral = 'true' | 'false'
               | <Assignment> ';'
               | <Write> ';'
               | <Read> ';'
+              | <Return> ';'
+  
              
-<Assignment>  ::= Identifier '=' <Expression>
-
+<Assignment>  ::= <GeneralIdentifier> '=' <Expression>
+<Return> ::= 'return' <Expression> 
 ! -------------------------------------------------
 ! Methods
 ! -------------------------------------------------
@@ -216,11 +218,12 @@ BoolLiteral = 'true' | 'false'
 <Function>  ::= <Type> Identifier '('<Params> ')' <FunctionBody>
 
 <Params> ::= <Type> <OptVector> <OptParams>
+          |
 
 <OptParams> ::= ',' <Params>
              |
 
-<FunctionBody> ::= '{'<Variables> <Statements> 'return' <Expression> ';' '}'
+<FunctionBody> ::= '{'<Variables> <Statements> '}'
 
 <Method> ::= 'method' <Function>
 
@@ -231,11 +234,13 @@ BoolLiteral = 'true' | 'false'
 <Classes> ::= <Class> <Classes>
            |
 
-<Class> ::= 'class' Identifier '{' <Variables> <Methods> '}'
+<Class> ::= 'class' Identifier <Extends> '{' <Variables> <Methods> '}'
          
 <Methods> ::= <Method> <Methods>
               |
 
+<Extends> ::= 'extends' Identifier
+           |
 ! -------------------------------------------------
 ! Main
 ! -------------------------------------------------
