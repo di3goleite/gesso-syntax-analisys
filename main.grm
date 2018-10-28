@@ -101,6 +101,7 @@ BoolLiteral = 'true' | 'false'
 ! -------------------------------------------------
 
 <Const> ::= 'const''{' <ConstBody> '}'
+        |
         
 <ConstBody> ::=  <Type> <ConstAssignmentList> ';' <ConstBody>
             |  
